@@ -331,7 +331,7 @@ function setupCommandPrompt() {
       // Display user command
       const cmdDisplay = document.createElement('div');
       cmdDisplay.className = 't-block';
-      cmdDisplay.innerHTML = `<span class="t-label">mrtan@kali:~$ </span><span class="t-white">${command}</span>`;
+      cmdDisplay.innerHTML = `<span class="t-label">kali㉿Mr-Tan:~$ </span><span class="t-white">${command}</span>`;
       terminal.output.appendChild(cmdDisplay);
 
       await terminal.newLine();
