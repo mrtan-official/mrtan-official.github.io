@@ -264,10 +264,10 @@ GET IN TOUCH
 Have a security challenge or research idea?
 I'm always open to collaboration and discussion.
 
-📧 Email:    contact@mrtan.dev
+📧 Email:    mrtanvai@gmail.com
 🔗 GitHub:   github.com/mrtan-official
-💼 LinkedIn: linkedin.com/in/mrtan-official
-🐦 Twitter:  @mrtan_security
+💼 LinkedIn: linkedin.com/in/mrtandev
+🐦 Twitter:  @mrtan-official
 📍 Location: Chittagong, Bangladesh
 
 Response time: Usually within 24 hours
