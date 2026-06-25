@@ -475,52 +475,41 @@ body {
 
 .about__avatar-placeholder {
   position: relative;
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  background: var(--bg-elevated);
-  border: 2px solid var(--neon);
   display: flex;
-  align-items: center;
   justify-content: center;
-  box-shadow: 0 0 30px rgba(0,255,65,0.15);
-  overflow: visible;
+  align-items: center;
+  width: 150px; /* ছবির সাইজের সাথে মিলিয়ে দাও */
+  height: 150px;
+  margin: 0 auto 30px auto; /* উপরে-নিচে গ্যাপের জন্য */
 }
 
-.avatar__initials {
-  font-family: var(--font-mono);
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--neon);
-  z-index: 1;
-}
-
+/* রিংগুলোর পজিশন ঠিক করা */
 .avatar__ring {
   position: absolute;
-  inset: -8px;
+  inset: -10px; /* রিংগুলোকে ছবির চারপাশে সুন্দরভাবে বসাতে */
   border-radius: 50%;
   border: 1px solid rgba(0,255,65,0.2);
   animation: spinRing 8s linear infinite;
+  pointer-events: none; /* যাতে মাউস ক্লিক বাধা না দেয় */
 }
 
 .avatar__ring--2 {
-  inset: -18px;
+  inset: -20px; /* বাইরের রিং একটু বড় হবে */
   border-color: rgba(0,180,216,0.15);
   animation-duration: 14s;
   animation-direction: reverse;
 }
-/* Update the existing CSS for .avatar__image */
+
+/* তোমার দেওয়া Avatar Image Styling */
 .avatar__image {
   position: relative;
   z-index: 1;
   border-radius: 50%;
   object-fit: cover;
   display: block;
-  /* Use fixed max width/height to control its size */
-  max-width: 150px; 
-  max-height: 150px;
-  /* Center it within its parent */
-  margin: 0 auto; 
+  width: 150px; 
+  height: 150px;
+  border: 2px solid var(--neon); /* রিংয়ের সাথে বর্ডার দিলে দেখতে আরও ফায়ার লাগবে */
 }
 
 @keyframes spinRing {
