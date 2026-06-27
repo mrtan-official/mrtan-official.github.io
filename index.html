@@ -124,6 +124,85 @@
     }
     .pill:hover { color:var(--neon); border-color:rgba(0,230,57,.3); background:rgba(0,230,57,.04); }
 
+    /* ── CV DOWNLOAD MODAL ── */
+    .cv-modal {
+      display:none; position:fixed; inset:0; z-index:2000;
+      background:rgba(0,0,0,.7); backdrop-filter:blur(4px);
+      -webkit-backdrop-filter:blur(4px); align-items:center; justify-content:center;
+      padding:var(--sp-6);
+    }
+    .cv-modal.active { display:flex; }
+    .cv-modal__content {
+      background:var(--bg-surface); border:1px solid var(--border);
+      border-radius:var(--radius-lg); padding:var(--sp-8);
+      max-width:480px; width:100%; box-shadow:0 24px 96px rgba(0,0,0,.85);
+      animation:modal-fade-in .3s ease;
+    }
+    @keyframes modal-fade-in {
+      from { opacity:0; transform:scale(.95); }
+      to { opacity:1; transform:scale(1); }
+    }
+    .cv-modal__header {
+      margin-bottom:var(--sp-6);
+    }
+    .cv-modal__title {
+      font-family:var(--font-mono); font-size:1.25rem; font-weight:700;
+      color:var(--text-primary); margin-bottom:var(--sp-2);
+    }
+    .cv-modal__desc {
+      font-size:.85rem; color:var(--text-secondary);
+    }
+    .cv-modal__options {
+      display:flex; flex-direction:column; gap:var(--sp-4);
+      margin-bottom:var(--sp-6);
+    }
+    .cv-download-btn {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:var(--sp-4) var(--sp-5); background:var(--bg-elevated);
+      border:1px solid rgba(0,230,57,.25); border-radius:var(--radius-md);
+      color:var(--text-primary); text-decoration:none; cursor:pointer;
+      transition:all var(--ease-fast); font-family:var(--font-mono);
+      font-size:.83rem;
+    }
+    .cv-download-btn:hover {
+      background:rgba(0,230,57,.1); border-color:rgba(0,230,57,.45);
+      transform:translateX(3px);
+    }
+    .cv-download-btn__icon {
+      font-size:1.2rem; margin-right:var(--sp-3);
+    }
+    .cv-download-btn__info {
+      display:flex; flex-direction:column;
+    }
+    .cv-download-btn__name {
+      color:var(--neon); font-weight:600; margin-bottom:2px;
+    }
+    .cv-download-btn__size {
+      font-size:.72rem; color:var(--text-tertiary);
+    }
+    .cv-download-btn__arrow {
+      color:var(--neon); opacity:.5; transition:opacity var(--ease-fast);
+    }
+    .cv-download-btn:hover .cv-download-btn__arrow {
+      opacity:1;
+    }
+    .cv-modal__footer {
+      display:flex; justify-content:space-between; align-items:center;
+      padding-top:var(--sp-4); border-top:1px solid var(--border);
+    }
+    .cv-modal__close {
+      background:none; border:none; color:var(--text-secondary);
+      cursor:pointer; font-family:var(--font-mono); font-size:.85rem;
+      padding:var(--sp-2) var(--sp-3); transition:color var(--ease-fast);
+    }
+    .cv-modal__close:hover {
+      color:var(--neon);
+    }
+    .cv-modal__meta {
+      font-family:var(--font-mono); font-size:.68rem;
+      color:var(--text-tertiary);
+    }
+
     /* Scroll hint */
     .home__hint {
       position:absolute; bottom:var(--sp-6); z-index:1;
@@ -150,7 +229,7 @@
       <span></span><span></span><span></span>
     </button>
     <ul class="nav__links" id="nav-links">
-      <li > <a href="assets/files/mrtan-cv.pdf" download class="pill">~/cv (download) </a> </li>
+      <li><a href="#" id="nav-cv-btn" class="pill">~/cv (download)</a></li>
       <li><a href="about.html"    class="nav__link"><span class="nav__link-prefix">~/</span>about</a></li>
       <li><a href="skills.html"   class="nav__link"><span class="nav__link-prefix">~/</span>skills</a></li>
       <li><a href="projects.html" class="nav__link"><span class="nav__link-prefix">~/</span>projects</a></li>
@@ -195,7 +274,42 @@
     </div>
   </main>
 
-  <script src="terminal.js"></script>
+  <!-- CV DOWNLOAD MODAL -->
+  <div class="cv-modal" id="cv-modal">
+    <div class="cv-modal__content">
+      <div class="cv-modal__header">
+        <h2 class="cv-modal__title">📥 Download CV</h2>
+        <p class="cv-modal__desc">Select your preferred format below</p>
+      </div>
+
+      <div class="cv-modal__options">
+        <a href="assets/files/mrtan-cv.pdf" download="Abu_Tanim_CV.pdf" class="cv-download-btn">
+          <span class="cv-download-btn__icon">📄</span>
+          <span class="cv-download-btn__info">
+            <span class="cv-download-btn__name">PDF Document</span>
+            <span class="cv-download-btn__size">High quality printable</span>
+          </span>
+          <span class="cv-download-btn__arrow">↓</span>
+        </a>
+
+        <a href="javascript:void(0)" id="cv-email-btn" class="cv-download-btn">
+          <span class="cv-download-btn__icon">📧</span>
+          <span class="cv-download-btn__info">
+            <span class="cv-download-btn__name">Send via Email</span>
+            <span class="cv-download-btn__size">Instant delivery</span>
+          </span>
+          <span class="cv-download-btn__arrow">→</span>
+        </a>
+      </div>
+
+      <div class="cv-modal__footer">
+        <span class="cv-modal__meta">Last updated: Dec 2024</span>
+        <button class="cv-modal__close" id="cv-modal-close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="terminal-enhanced.js"></script>
   <script src="nav.js"></script>
 </body>
 </html>
