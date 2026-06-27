@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Skills — Mr. Tan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .skills-grid {
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:var(--sp-4);
+    }
+    .skill-card {
+      background:var(--bg-card); border:1px solid var(--border);
+      border-radius:var(--radius-md); padding:var(--sp-6) var(--sp-6) var(--sp-5);
+      transition:border-color var(--ease-std),transform var(--ease-std),box-shadow var(--ease-std);
+      position:relative; overflow:hidden; cursor:default;
+    }
+    .skill-card::after {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(135deg,var(--neon-subtle) 0%,transparent 55%);
+      opacity:0; transition:opacity var(--ease-std); pointer-events:none;
+    }
+    .skill-card:hover { border-color:rgba(0,230,57,.2); transform:translateY(-2px); box-shadow:0 8px 32px rgba(0,0,0,.3); }
+    .skill-card:hover::after { opacity:1; }
+
+    .skill-card__icon { font-size:1.5rem; margin-bottom:var(--sp-4); display:block; position:relative; z-index:1; }
+    .skill-card__title { font-family:var(--font-mono); font-size:.9rem; font-weight:600; color:var(--text-primary); margin-bottom:var(--sp-3); position:relative; z-index:1; }
+    .skill-card__desc { font-size:.83rem; color:var(--text-secondary); line-height:1.72; margin-bottom:var(--sp-5); position:relative; z-index:1; }
+  </style>
+</head>
+<body>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav__logo">
+      <span class="nav__logo-bracket">[</span><span class="nav__logo-text">Mr.Tan</span><span class="nav__logo-bracket">]</span><span class="nav__logo-cursor">_</span>
+    </a>
+    <button class="nav__hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav__links" id="nav-links">
+      <li><a href="about.html"    class="nav__link"><span class="nav__link-prefix">~/</span>about</a></li>
+      <li><a href="skills.html"   class="nav__link active"><span class="nav__link-prefix">~/</span>skills</a></li>
+      <li><a href="projects.html" class="nav__link"><span class="nav__link-prefix">~/</span>projects</a></li>
+      <li><a href="contact.html"  class="nav__link nav__link--cta">contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="page">
+    <div class="page-hero">
+      <div class="page-hero__bg" aria-hidden="true"></div>
+      <div class="container">
+        <span class="page-hero__eyebrow">// 02</span>
+        <h1 class="page-hero__title">Capabilities<span class="accent">.</span></h1>
+        <p class="page-hero__sub">Technical stack across security research, development, and intelligence operations.</p>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="container">
+        <div class="skills-grid">
+          <div class="skill-card reveal">
+            <span class="skill-card__icon">🛡️</span>
+            <h2 class="skill-card__title">Network Security</h2>
+            <p class="skill-card__desc">Penetration testing, traffic analysis, IDS/IPS configuration, firewall rule engineering, and threat hunting across enterprise networks.</p>
+            <div><span class="tag">Nmap</span><span class="tag">Wireshark</span><span class="tag">Metasploit</span><span class="tag">Burp Suite</span></div>
+          </div>
+
+          <div class="skill-card reveal">
+            <span class="skill-card__icon">🔒</span>
+            <h2 class="skill-card__title">Zero Trust Architecture</h2>
+            <p class="skill-card__desc">Designing identity-centric security models with micro-segmentation, least-privilege enforcement, and continuous verification pipelines.</p>
+            <div><span class="tag">IAM</span><span class="tag">MFA</span><span class="tag">ZTNA</span><span class="tag">mTLS</span></div>
+          </div>
+
+          <div class="skill-card reveal">
+            <span class="skill-card__icon">🐍</span>
+            <h2 class="skill-card__title">Python Development</h2>
+            <p class="skill-card__desc">Building CLI security tools, automation scripts, network scanners, and AI-augmented pipelines for threat intelligence processing.</p>
+            <div><span class="tag">Python</span><span class="tag">Scapy</span><span class="tag">Rich</span><span class="tag">FastAPI</span></div>
+          </div>
+
+          <div class="skill-card reveal">
+            <span class="skill-card__icon">🤖</span>
+            <h2 class="skill-card__title">AI-Driven Automation</h2>
+            <p class="skill-card__desc">Integrating machine learning models into security workflows for anomaly detection, log analysis, and predictive threat modeling.</p>
+            <div><span class="tag">ML</span><span class="tag">NLP</span><span class="tag">SIEM</span><span class="tag">LLM APIs</span></div>
+          </div>
+
+          <div class="skill-card reveal">
+            <span class="skill-card__icon">🔍</span>
+            <h2 class="skill-card__title">Vulnerability Assessment</h2>
+            <p class="skill-card__desc">Systematic identification and analysis of attack surfaces using OWASP frameworks, CVE research, and custom exploit development.</p>
+            <div><span class="tag">OWASP</span><span class="tag">CVE</span><span class="tag">OSINT</span><span class="tag">Kali Linux</span></div>
+          </div>
+
+          <div class="skill-card reveal">
+            <span class="skill-card__icon">🌐</span>
+            <h2 class="skill-card__title">OSINT &amp; Forensics</h2>
+            <p class="skill-card__desc">Open-source intelligence gathering, digital forensics, IP geolocation, and investigative CLI tools for security research.</p>
+            <div><span class="tag">Shodan</span><span class="tag">Maltego</span><span class="tag">ip-api</span><span class="tag">theHarvester</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer__top">
+          <div>
+            <div class="footer__logo">Mr<span class="accent">.</span>Tan</div>
+            <p class="footer__tagline">// Securing systems. Automating intelligence. Breaking limits.</p>
+          </div>
+          <div class="footer__links">
+            <a href="https://github.com/mrtan-official" class="footer__social" target="_blank">
+              <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+              GitHub
+            </a>
+            <a href="mailto:mrtanvai@gmail.com" class="footer__social">
+              <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              Email
+            </a>
+          </div>
+        </div>
+        <div class="footer__bottom">
+          <span class="footer__copy">&copy; 2026 Abu Tanim.</span>
+          <span class="footer__version">v3.0.0 // mrtan-official.github.io</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="nav.js"></script>
+  <script src="reveal.js"></script>
+</body>
+</html>
