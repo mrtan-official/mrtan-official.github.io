@@ -64,18 +64,11 @@ const COMMANDS = {
   clear:    () => { document.getElementById('terminal-output').innerHTML = ''; return []; },
   cv:       () => {
     setTimeout(() => {
-      const a = document.createElement('a');
-      a.href = 'https://mrtan-official.github.io/assets/files/mrtan-cv.pdf';
-      a.download = 'MrTan-CV.pdf';
-      a.target = '_blank';
-      a.rel = 'noopener noreferrer';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    }, 400);
+      window.open('assets/files/mrtan-cv.pdf', '_blank');
+    }, 300);
     return [
-      '<span class="t-green">→</span> <span class="t-dim">Fetching</span> <span class="t-white">mrtan-cv.pdf</span> <span class="t-dim">from GitHub...</span>',
-      '<span class="t-dim">[</span><span class="t-green">✔</span><span class="t-dim">]</span> Download started — <span class="t-white">mrtan-cv.pdf</span>',
+      '<span class="t-dim">$ cat assets/files/mrtan-cv.pdf</span>',
+      '<span class="t-dim">[</span><span class="t-green">✔</span><span class="t-dim">]</span> Opening <span class="t-white">mrtan-cv.pdf</span> <span class="t-dim">in new tab...</span>',
     ];
   },
 };
