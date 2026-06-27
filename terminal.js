@@ -26,7 +26,7 @@ const BOOT = [
   { html: '<span class="t-dim">[</span><span class="t-green">✔</span><span class="t-dim">]</span> Shizuka AI             <span class="t-green">online</span>', delay: 55 },
   { html: '<span class="t-dim">[</span><span class="t-green">✔</span><span class="t-dim">]</span> NmapEasy CLI           <span class="t-green">online</span>', delay: 55 },
   { html: '', delay: 60 },
-  { html: '<span class="t-green">Session ready.</span> <span class="t-dim">Type</span> <span class="t-white">help</span> <span class="t-dim">for commands.</span>', delay: 0 },
+  { html: '<span class="t-green">Session ready.</span> <span class="t-dim">Type</span> <span class="t-white">help</span> <span class="t-dim">for commands. Try</span> <span class="t-white">cv</span> <span class="t-dim">to download my resume.</span>', delay: 0 },
   { html: '', delay: 0 },
 ];
 
@@ -43,6 +43,7 @@ const COMMANDS = {
     '  <span class="t-green">contact</span>    <span class="t-dim">→</span> <span class="t-label">get in touch</span>',
     '  <span class="t-green">whoami</span>     <span class="t-dim">→</span> <span class="t-label">current identity</span>',
     '  <span class="t-green">ls</span>         <span class="t-dim">→</span> <span class="t-label">list pages</span>',
+    '  <span class="t-green">cv</span>         <span class="t-dim">→</span> <span class="t-label">download my CV / resume</span>',
     '  <span class="t-green">clear</span>      <span class="t-dim">→</span> <span class="t-label">clear terminal</span>',
     '<span class="t-dim">──────────────────────────────────────────</span>',
   ],
@@ -61,6 +62,22 @@ const COMMANDS = {
   uname:    () => ['<span class="t-white">Kali GNU/Linux 2025.1 x86_64</span>'],
   sudo:     () => ['<span class="t-warn">mrtan is not in the sudoers file. This incident will be reported.</span>'],
   clear:    () => { document.getElementById('terminal-output').innerHTML = ''; return []; },
+  cv:       () => {
+    setTimeout(() => {
+      const a = document.createElement('a');
+      a.href = 'https://mrtan-official.github.io/assets/files/mrtan-cv.pdf';
+      a.download = 'MrTan-CV.pdf';
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }, 400);
+    return [
+      '<span class="t-green">→</span> <span class="t-dim">Fetching</span> <span class="t-white">mrtan-cv.pdf</span> <span class="t-dim">from GitHub...</span>',
+      '<span class="t-dim">[</span><span class="t-green">✔</span><span class="t-dim">]</span> Download started — <span class="t-white">mrtan-cv.pdf</span>',
+    ];
+  },
 };
 
 function nav(page) {
