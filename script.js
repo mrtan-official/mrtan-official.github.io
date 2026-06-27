@@ -1,536 +1,335 @@
 /* =============================================
-   MR. TAN — PORTFOLIO SCRIPT
-   Terminal Animation | Interactive Features
+   MR. TAN — PORTFOLIO SCRIPT v3.0
+   Terminal engine · Nav · Scroll reveal
    ============================================= */
 
-// ============================================
-// 1. TERMINAL TYPEWRITER EFFECT
-// ============================================
+'use strict';
 
-class TerminalTypewriter {
-  constructor(outputElementId, inputElementId, promptRowId) {
-    this.output = document.getElementById(outputElementId);
-    this.input = document.getElementById(inputElementId);
-    this.promptRow = document.getElementById(promptRowId);
-    this.speed = 30; // ms per character
-    this.isTyping = false;
-  }
+/* ─── TERMINAL BOOT SEQUENCE ─────────────────── */
 
-  async type(text, className = '') {
-    this.isTyping = true;
-    const span = document.createElement('span');
-    if (className) span.className = className;
+const BOOT_LINES = [
+  { text: '',                                                             delay: 0 },
+  { text: '<span class="t-dim">┌──────────────────────────────────────────┐</span>', delay: 80 },
+  { text: '<span class="t-dim">│</span>  <span class="t-cyan">INITIALIZING SECURE SESSION</span>             <span class="t-dim">│</span>', delay: 60 },
+  { text: '<span class="t-dim">└──────────────────────────────────────────┘</span>', delay: 60 },
+  { text: '',                                                             delay: 50 },
+  { text: '<span class="t-label">whoami</span>',                          delay: 180, isCmd: true },
+  { text: '<span class="t-white">Abu Tanim</span> <span class="t-dim">// Mr. Tan</span>', delay: 40 },
+  { text: '',                                                             delay: 30 },
+  { text: '<span class="t-label">cat identity.json</span>',              delay: 220, isCmd: true },
+  { text: '<span class="t-dim">{</span>',                                 delay: 40 },
+  { text: '  <span class="t-cyan">"role"</span>     <span class="t-dim">:</span> <span class="t-white">"Cybersecurity Researcher"</span><span class="t-dim">,</span>', delay: 40 },
+  { text: '  <span class="t-cyan">"stack"</span>    <span class="t-dim">:</span> <span class="t-white">"Python · Networks · AI Security"</span><span class="t-dim">,</span>', delay: 40 },
+  { text: '  <span class="t-cyan">"location"</span> <span class="t-dim">:</span> <span class="t-white">"Chittagong, Bangladesh"</span><span class="t-dim">,</span>', delay: 40 },
+  { text: '  <span class="t-cyan">"status"</span>   <span class="t-dim">:</span> <span class="t-green">"available"</span>', delay: 40 },
+  { text: '<span class="t-dim">}</span>',                                  delay: 30 },
+  { text: '',                                                             delay: 50 },
+  { text: '<span class="t-label">./check_systems.sh</span>',             delay: 200, isCmd: true },
+  { text: '<span class="t-dim">[</span><span class="t-green">✔</span><span class="t-dim">]</span> Zero Trust Framework   <span class="t-green">online</span>', delay: 55 },
+  { text: '<span class="t-dim">[</span><span class="t-green">✔</span><span class="t-dim">]</span> OSINT Toolkit          <span class="t-green">online</span>', delay: 55 },
+  { text: '<span class="t-dim">[</span><span class="t-green">✔</span><span class="t-dim">]</span> Shizuka AI             <span class="t-green">online</span>', delay: 55 },
+  { text: '<span class="t-dim">[</span><span class="t-green">✔</span><span class="t-dim">]</span> NmapEasy CLI           <span class="t-green">online</span>', delay: 55 },
+  { text: '',                                                             delay: 60 },
+  { text: '<span class="t-green">Session ready.</span> <span class="t-dim">Type</span> <span class="t-white">help</span> <span class="t-dim">for available commands.</span>', delay: 0 },
+  { text: '',                                                             delay: 0 },
+];
 
-    for (let char of text) {
-      span.textContent += char;
-      await this.delay(this.speed);
-    }
+const PROMPT_HTML = `<span class="prompt__user">kali</span><span class="prompt__at">㉿</span><span class="prompt__host">Mr-Tan</span><span class="prompt__sep">:</span><span class="prompt__dir">~</span><span class="prompt__dollar">$</span>&nbsp;`;
 
-    this.output.appendChild(span);
-    return span;
-  }
-
-  async typeBlock(text, className = '') {
-    const block = document.createElement('div');
-    block.className = 't-block';
-    const span = document.createElement('span');
-    if (className) span.className = className;
-
-    for (let char of text) {
-      span.textContent += char;
-      block.appendChild(span.cloneNode(true));
-      span.textContent = '';
-      await this.delay(this.speed);
-    }
-
-    this.output.appendChild(block);
-    return block;
-  }
-
-  async newLine() {
-    const br = document.createElement('div');
-    br.className = 't-block';
-    this.output.appendChild(br);
-  }
-
-  delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-  async sequence(commands) {
-    for (let cmd of commands) {
-      if (cmd.type === 'line') {
-        await this.typeBlock(cmd.text, cmd.class || '');
-        await this.delay(100);
-      } else if (cmd.type === 'prompt') {
-        await this.typeBlock(cmd.text, 't-label');
-        await this.delay(150);
-      } else if (cmd.type === 'pause') {
-        await this.delay(cmd.duration || 500);
-      } else if (cmd.type === 'newline') {
-        await this.newLine();
-      }
-    }
-    this.isTyping = false;
-    this.promptRow.classList.add('visible');
-    this.input.focus();
-  }
-
-  clear() {
-    this.output.innerHTML = '';
-  }
-}
-
-// ============================================
-// 2. INITIALIZATION SEQUENCE
-// ============================================
-
-const terminal = new TerminalTypewriter('terminal-output', 'terminal-input', 'terminal-prompt-row');
-
-window.addEventListener('DOMContentLoaded', () => {
-  runInitializationSequence();
-  setupNavigation();
-  setupCommandPrompt();
-  setupScrollAnimations();
-  setupMobileMenu();
-});
-
-async function runInitializationSequence() {
-  const commands = [
-    { type: 'newline' },
-    { type: 'prompt', text: '> System Initialization Started...' },
-    { type: 'pause', duration: 400 },
-    { type: 'newline' },
-    { type: 'line', text: '⚙️  Loading system components...' },
-    { type: 'pause', duration: 600 },
-    { type: 'line', text: '✓ Kernel: Linux 6.2.1' },
-    { type: 'line', text: '✓ Shell: Zsh 5.9' },
-    { type: 'line', text: '✓ Database: Connected' },
-    { type: 'pause', duration: 400 },
-    { type: 'newline' },
-    { type: 'prompt', text: '> User Authentication...' },
-    { type: 'pause', duration: 500 },
-    { type: 'line', text: '✓ User: ', class: 't-label' },
-    { type: 'pause', duration: 300 },
-    { type: 'newline' },
-    { type: 'line', text: '>>> Abu Tanim (Mr. Tan)', class: 't-green' },
-    { type: 'pause', duration: 400 },
-    { type: 'newline' },
-    { type: 'prompt', text: '> Profile Loaded' },
-    { type: 'pause', duration: 300 },
-    { type: 'line', text: '✓ Role: Cybersecurity Researcher & Python Developer', class: 't-white' },
-    { type: 'line', text: '✓ Status: ONLINE 🟢', class: 't-green' },
-    { type: 'line', text: '✓ Location: Chittagong, Bangladesh', class: 't-cyan' },
-    { type: 'pause', duration: 400 },
-    { type: 'newline' },
-    { type: 'prompt', text: '> Security Status' },
-    { type: 'pause', duration: 300 },
-    { type: 'line', text: '✓ Firewall: ACTIVE', class: 't-green' },
-    { type: 'line', text: '✓ Encryption: AES-256', class: 't-green' },
-    { type: 'line', text: '✓ Threat Level: MINIMAL', class: 't-green' },
-    { type: 'pause', duration: 400 },
-    { type: 'newline' },
-    { type: 'prompt', text: '> Ready for Collaboration' },
-    { type: 'pause', duration: 300 },
-    { type: 'line', text: 'Type "help" to explore available commands.', class: 't-dim' },
-    { type: 'pause', duration: 200 },
-  ];
-
-  await terminal.sequence(commands);
-}
-
-// ============================================
-// 3. COMMAND PROMPT HANDLER
-// ============================================
-
+/* Command definitions */
 const COMMANDS = {
-  help: {
-    description: 'Display available commands',
-    action: () => `
-Available Commands:
-  help        — Show this message
-  about       — Learn about Mr. Tan
-  projects    — View featured projects
-  skills      — Check skill set
-  contact     — Get in touch
-  cv          — Download resume (PDF)
-  github      — Visit GitHub profile
-  clear       — Clear terminal
-  easter      — Unlock hidden message 🎯
-    `.trim(),
+  help: () => [
+    '<span class="t-dim">─────────────────────────────────────────</span>',
+    '<span class="t-cyan">AVAILABLE COMMANDS</span>',
+    '<span class="t-dim">─────────────────────────────────────────</span>',
+    '  <span class="t-green">about</span>      <span class="t-dim">—</span> <span class="t-label">who is Mr. Tan?</span>',
+    '  <span class="t-green">skills</span>     <span class="t-dim">—</span> <span class="t-label">technical capabilities</span>',
+    '  <span class="t-green">projects</span>   <span class="t-dim">—</span> <span class="t-label">active & research projects</span>',
+    '  <span class="t-green">contact</span>    <span class="t-dim">—</span> <span class="t-label">get in touch</span>',
+    '  <span class="t-green">whoami</span>     <span class="t-dim">—</span> <span class="t-label">current user identity</span>',
+    '  <span class="t-green">clear</span>      <span class="t-dim">—</span> <span class="t-label">clear terminal output</span>',
+    '<span class="t-dim">─────────────────────────────────────────</span>',
+  ],
+
+  whoami: () => [
+    '<span class="t-white">Abu Tanim</span> <span class="t-dim">(Mr. Tan)</span>',
+    '<span class="t-dim">Cybersecurity Researcher · Python Developer</span>',
+    '<span class="t-dim">Premier University, CSE — Chittagong, BD</span>',
+  ],
+
+  about: () => {
+    smoothScrollTo('#about');
+    return ['<span class="t-green">→</span> <span class="t-dim">Navigating to</span> <span class="t-white">About</span>'];
   },
 
-  about: {
-    description: 'Display about information',
-    action: () => `
-ABOUT ME
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Abu Tanim (Mr. Tan)
-Cybersecurity Researcher & Python Developer
-Premier University, Chittagong | CSE Student
-
-EXPERTISE:
-  → Zero Trust Architecture
-  → Network Security & Penetration Testing
-  → Vulnerability Assessment & VAPT
-  → AI-driven Automation & Threat Intelligence
-  → Python Development & CLI Tools
-  → Digital Forensics & Incident Response
-
-PHILOSOPHY:
-"Security is not a destination—it's a continuous 
-process of learning, adapting, and building 
-resilient systems."
-
-Current Focus: Zero Trust implementation, 
-Advanced threat modeling, AI-augmented security.
-    `.trim(),
+  skills: () => {
+    smoothScrollTo('#skills');
+    return ['<span class="t-green">→</span> <span class="t-dim">Navigating to</span> <span class="t-white">Skills</span>'];
   },
 
-  projects: {
-    description: 'List featured projects',
-    action: () => `
-FEATURED PROJECTS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-[01] Shizuka AI
-    AI-powered threat intelligence assistant
-    Tech: Python | LLM API | NLP | OSINT
-    Status: ● Active Development
-    
-[02] Zero Trust Security Framework
-    Modular ZTNA implementation for SMBs
-    Tech: Python | IAM | mTLS | Micro-segmentation
-    Status: ● Active Development
-
-[03] NmapEasy CLI
-    Menu-driven Nmap wrapper with 14+ scan profiles
-    Tech: Python | Nmap | Rich CLI | ANSI
-    Status: ● Production Ready
-
-[04] IP Geolocation Intel Tool
-    Multi-source IP intelligence & geolocation
-    Tech: Python | Rich | ip-api | REST
-    Status: ● In Development
-
-[05] Digital Forensics Toolkit
-    Evidence collection & incident response automation
-    Tech: Python | Forensics | IR | Log Analysis
-    Status: ● Research Phase
-
-View detailed project info at: ~/projects section
-    `.trim(),
+  projects: () => {
+    smoothScrollTo('#projects');
+    return ['<span class="t-green">→</span> <span class="t-dim">Navigating to</span> <span class="t-white">Projects</span>'];
   },
 
-  skills: {
-    description: 'Display skill set',
-    action: () => `
-SKILL SET
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-🛡️  NETWORK SECURITY
-    Nmap | Wireshark | Metasploit | Burp Suite
-    Penetration Testing | Traffic Analysis | IDS/IPS
-
-🔒 ZERO TRUST ARCHITECTURE
-    IAM | MFA | ZTNA | mTLS
-    Identity-centric Security | Micro-segmentation
-
-🐍 PYTHON DEVELOPMENT
-    Python | Scapy | Rich | FastAPI
-    CLI Tools | Automation | Scripting
-
-🤖 AI-DRIVEN AUTOMATION
-    ML | NLP | SIEM Integration | LLM APIs
-    Anomaly Detection | Threat Intelligence
-
-🔍 VULNERABILITY ASSESSMENT
-    OWASP | CVE Research | OSINT | Kali Linux
-    Exploit Development | Attack Surface Analysis
-
-🌐 OSINT & FORENSICS
-    Shodan | Maltego | theHarvester | ip-api
-    Digital Forensics | Incident Response
-    `.trim(),
+  contact: () => {
+    smoothScrollTo('#contact');
+    return ['<span class="t-green">→</span> <span class="t-dim">Navigating to</span> <span class="t-white">Contact</span>'];
   },
 
-  contact: {
-    description: 'Get contact information',
-    action: () => `
-GET IN TOUCH
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Have a security challenge or research idea?
-I'm always open to collaboration and discussion.
-
-📧 Email:    mrtanvai@gmail.com
-🔗 GitHub:   github.com/mrtan-official
-💼 LinkedIn: linkedin.com/in/mrtandev
-🐦 Twitter:  @mrtan-official
-📍 Location: Chittagong, Bangladesh
-
-Response time: Usually within 24 hours
-Preferred: Security-related inquiries & collaboration
-    `.trim(),
+  clear: () => {
+    const output = document.getElementById('terminal-output');
+    if (output) output.innerHTML = '';
+    return [];
   },
 
-  cv: {
-    description: 'Download resume/CV',
-    action: () => {
-      window.open('assets/files/mrtan-cv.pdf', '_blank');
-      return '📄 Downloading resume... (CV-Abu-Tanim.pdf)';
-    },
-  },
+  ls: () => [
+    '<span class="t-cyan">about/</span>   <span class="t-cyan">projects/</span>   <span class="t-cyan">skills/</span>   <span class="t-white">identity.json</span>   <span class="t-white">README.md</span>',
+  ],
 
-  github: {
-    description: 'Open GitHub profile',
-    action: () => {
-      window.open('https://github.com/mrtan-official', '_blank');
-      return '🔗 Opening GitHub profile in new tab...';
-    },
-  },
+  pwd: () => ['<span class="t-white">/home/mrtan/portfolio</span>'],
 
-  clear: {
-    description: 'Clear terminal output',
-    action: () => {
-      terminal.clear();
-      terminal.promptRow.classList.remove('visible');
-      return null; // Don't display output
-    },
-  },
+  date: () => [`<span class="t-white">${new Date().toUTCString()}</span>`],
 
-  easter: {
-    description: 'Unlock hidden message',
-    action: () => `
-🎯 EASTER EGG UNLOCKED
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  uname: () => ['<span class="t-white">Kali GNU/Linux 2025.1 x86_64</span>'],
 
-"In the silence of the digital, we build fortresses.
-In the chaos of the network, we find peace.
-Security is not about fear—it's about freedom."
-
-— Mr. Tan
-
-P.S. You're now part of the inner circle. 
-Welcome to the matrix. 🟢
-    `.trim(),
-  },
+  sudo: (args) => [
+    '<span class="t-warn">[sudo] password for mrtan:</span>',
+    '<span class="t-warn">mrtan is not in the sudoers file. This incident will be reported.</span>',
+  ],
 };
 
-function setupCommandPrompt() {
-  const input = document.getElementById('terminal-input');
-
-  input.addEventListener('keypress', async (e) => {
-    if (e.key === 'Enter') {
-      const command = input.value.trim().toLowerCase();
-      input.value = '';
-
-      if (terminal.isTyping) return;
-
-      // Display user command
-      const cmdDisplay = document.createElement('div');
-      cmdDisplay.className = 't-block';
-      cmdDisplay.innerHTML = `<span class="t-label">kali㉿Mr-Tan:~$ </span><span class="t-white">${command}</span>`;
-      terminal.output.appendChild(cmdDisplay);
-
-      await terminal.newLine();
-
-      // Execute command
-      if (COMMANDS[command]) {
-        const result = COMMANDS[command].action();
-        if (result) {
-          const output = document.createElement('div');
-          output.className = 't-block t-white';
-          output.textContent = result;
-          terminal.output.appendChild(output);
-        }
-      } else if (command === '') {
-        // Do nothing on empty command
-      } else {
-        const error = document.createElement('div');
-        error.className = 't-block t-warn';
-        error.textContent = `Command not found: "${command}" | Type "help" for available commands`;
-        terminal.output.appendChild(error);
-      }
-
-      await terminal.newLine();
-
-      // Scroll to bottom
-      terminal.output.parentElement.scrollTop = terminal.output.parentElement.scrollHeight;
-    }
-  });
+/* Unknown command response */
+function unknownCmd(cmd) {
+  return [
+    `<span class="t-warn">bash: ${escHtml(cmd)}: command not found</span>`,
+    '<span class="t-dim">Type <span class="t-white">help</span> to list available commands.</span>',
+  ];
 }
 
-// ============================================
-// 4. NAVIGATION
-// ============================================
+/* ─── UTILITY ─────────────────────────────────── */
 
-function setupNavigation() {
-  const nav = document.getElementById('nav');
-  let lastScroll = 0;
+function escHtml(str) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
 
-  window.addEventListener('scroll', () => {
-    const currentScroll = window.scrollY;
+function smoothScrollTo(selector) {
+  const el = document.querySelector(selector);
+  if (el) {
+    const offset = 70;
+    const top = el.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+}
 
-    if (currentScroll > 100) {
-      nav.classList.add('scrolled');
+/* ─── TERMINAL ENGINE ─────────────────────────── */
+
+class Terminal {
+  constructor(outputEl, promptRowEl) {
+    this.output    = outputEl;
+    this.promptRow = promptRowEl;
+    this.history   = [];
+    this.histIdx   = -1;
+    this.booted    = false;
+  }
+
+  /** Append a line of HTML to the output */
+  appendLine(html, isCmdLine = false) {
+    const div = document.createElement('div');
+    div.className = isCmdLine ? 'terminal-cmd-line' : 'terminal-response';
+
+    if (isCmdLine) {
+      div.innerHTML = `${PROMPT_HTML}<span class="t-white">${html}</span>`;
     } else {
-      nav.classList.remove('scrolled');
+      div.innerHTML = html;
     }
 
-    lastScroll = currentScroll;
-  });
+    this.output.appendChild(div);
+    this.output.scrollTop = this.output.scrollHeight;
+  }
 
-  // Smooth scroll for nav links
-  document.querySelectorAll('.nav__link').forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      const target = link.getAttribute('href');
-      if (target.startsWith('#')) {
-        const section = document.querySelector(target);
-        if (section) {
-          section.scrollIntoView({ behavior: 'smooth' });
-          closeMobileMenu();
-        }
-      }
+  /** Run the boot animation */
+  async boot() {
+    let cumDelay = 0;
+
+    for (const line of BOOT_LINES) {
+      cumDelay += line.delay;
+      await this._schedule(cumDelay, () => {
+        this.appendLine(line.text, line.isCmd || false);
+      });
+    }
+
+    // Show prompt row after boot
+    await this._schedule(cumDelay + 200, () => {
+      this.promptRow.classList.add('visible');
+      this.booted = true;
     });
-  });
-}
+  }
 
-// ============================================
-// 5. MOBILE MENU
-// ============================================
-
-function setupMobileMenu() {
-  const hamburger = document.getElementById('hamburger');
-  const navLinks = document.getElementById('nav-links');
-
-  if (hamburger) {
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('open');
-      navLinks.classList.toggle('open');
+  _schedule(ms, fn) {
+    return new Promise(resolve => {
+      setTimeout(() => { fn(); resolve(); }, ms);
     });
+  }
+
+  /** Handle user command submission */
+  handleCommand(raw) {
+    const trimmed = raw.trim();
+    if (!trimmed) return;
+
+    // Echo the command
+    this.appendLine(escHtml(trimmed), true);
+
+    // History
+    this.history.unshift(trimmed);
+    if (this.history.length > 50) this.history.pop();
+    this.histIdx = -1;
+
+    // Execute
+    const [cmd, ...args] = trimmed.toLowerCase().split(/\s+/);
+    const handler = COMMANDS[cmd];
+    const lines = handler ? handler(args) : unknownCmd(cmd);
+
+    if (lines && lines.length) {
+      lines.forEach(l => this.appendLine(l));
+    }
+
+    this.appendLine(''); // blank spacer
+    this.output.scrollTop = this.output.scrollHeight;
+  }
+
+  /** Navigate command history */
+  historyUp(inputEl) {
+    if (this.history.length === 0) return;
+    this.histIdx = Math.min(this.histIdx + 1, this.history.length - 1);
+    inputEl.value = this.history[this.histIdx];
+  }
+
+  historyDown(inputEl) {
+    if (this.histIdx <= 0) {
+      this.histIdx = -1;
+      inputEl.value = '';
+      return;
+    }
+    this.histIdx--;
+    inputEl.value = this.history[this.histIdx];
   }
 }
 
-function closeMobileMenu() {
-  const hamburger = document.getElementById('hamburger');
-  const navLinks = document.getElementById('nav-links');
+/* ─── NAV SCROLL BEHAVIOUR ────────────────────── */
 
-  if (hamburger && navLinks) {
-    hamburger.classList.remove('open');
-    navLinks.classList.remove('open');
-  }
-}
+function initNav() {
+  const nav  = document.getElementById('nav');
+  const btn  = document.getElementById('hamburger');
+  const menu = document.getElementById('nav-links');
 
-// ============================================
-// 6. SCROLL REVEAL ANIMATIONS
-// ============================================
+  // Scroll-triggered class
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
 
-function setupScrollAnimations() {
-  const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px',
-  };
+  // Hamburger toggle
+  btn.addEventListener('click', () => {
+    const open = menu.classList.toggle('open');
+    btn.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', String(open));
+  });
 
-  const observer = new IntersectionObserver((entries) => {
+  // Close mobile menu on link click
+  menu.querySelectorAll('.nav__link').forEach(link => {
+    link.addEventListener('click', () => {
+      menu.classList.remove('open');
+      btn.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Active link highlighting on scroll
+  const sections = document.querySelectorAll('section[id], footer[id]');
+  const navLinks = document.querySelectorAll('.nav__link[href^="#"]');
+
+  const sectionObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('revealed');
+        navLinks.forEach(link => {
+          link.classList.toggle(
+            'nav__link--active',
+            link.getAttribute('href') === `#${entry.target.id}`
+          );
+        });
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+
+  sections.forEach(s => sectionObserver.observe(s));
+}
+
+/* ─── SCROLL REVEAL ───────────────────────────── */
+
+function initReveal() {
+  const reveals = document.querySelectorAll('.reveal');
+
+  if (!reveals.length) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        // Stagger siblings slightly
+        const siblings = [...entry.target.parentElement.querySelectorAll('.reveal:not(.revealed)')];
+        const idx = siblings.indexOf(entry.target);
+        const delay = Math.min(idx * 60, 240);
+
+        setTimeout(() => {
+          entry.target.classList.add('revealed');
+        }, delay);
+
         observer.unobserve(entry.target);
       }
     });
-  }, observerOptions);
-
-  // Add reveal class to elements
-  document.querySelectorAll('.skill-card, .project-card').forEach(el => {
-    el.classList.add('reveal');
-    observer.observe(el);
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -40px 0px',
   });
+
+  reveals.forEach(el => observer.observe(el));
 }
 
-// ============================================
-// 7. ACCESSIBILITY & KEYBOARD SHORTCUTS
-// ============================================
+/* ─── INIT ────────────────────────────────────── */
 
-document.addEventListener('keydown', (e) => {
-  // Focus terminal input with '/'
-  if (e.key === '/' && !e.ctrlKey && !e.metaKey) {
-    e.preventDefault();
-    const input = document.getElementById('terminal-input');
-    if (input) input.focus();
-  }
+document.addEventListener('DOMContentLoaded', () => {
 
-  // Close mobile menu with Escape
-  if (e.key === 'Escape') {
-    closeMobileMenu();
-  }
-});
+  /* Nav */
+  initNav();
 
-// ============================================
-// 8. PREFERS REDUCED MOTION
-// ============================================
+  /* Terminal */
+  const outputEl    = document.getElementById('terminal-output');
+  const promptRowEl = document.getElementById('terminal-prompt-row');
+  const inputEl     = document.getElementById('terminal-input');
 
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-if (prefersReducedMotion.matches) {
-  document.documentElement.style.scrollBehavior = 'auto';
-  terminal.speed = 10; // Much faster if user prefers reduced motion
-}
+  if (outputEl && promptRowEl && inputEl) {
+    const term = new Terminal(outputEl, promptRowEl);
+    term.boot();
 
-// ============================================
-// 9. PERFORMANCE OPTIMIZATION
-// ============================================
-
-// Lazy load images if needed
-if ('IntersectionObserver' in window) {
-  const imageObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const img = entry.target;
-        img.src = img.dataset.src;
-        img.removeAttribute('data-src');
-        observer.unobserve(img);
+    /* Input: Enter to run, arrows for history */
+    inputEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const val = inputEl.value;
+        inputEl.value = '';
+        term.handleCommand(val);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        term.historyUp(inputEl);
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        term.historyDown(inputEl);
       }
     });
-  });
 
-  document.querySelectorAll('img[data-src]').forEach(img => {
-    imageObserver.observe(img);
-  });
-}
-
-// ============================================
-// 10. EASTER EGG KONAMI CODE
-// ============================================
-
-const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-let konamiIndex = 0;
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === konamiCode[konamiIndex]) {
-    konamiIndex++;
-    if (konamiIndex === konamiCode.length) {
-      activateKonamiMode();
-      konamiIndex = 0;
-    }
-  } else {
-    konamiIndex = 0;
+    /* Click anywhere on terminal body to focus input */
+    outputEl.addEventListener('click', () => inputEl.focus());
   }
+
+  /* Scroll reveal */
+  initReveal();
+
 });
-
-function activateKonamiMode() {
-  document.body.style.filter = 'hue-rotate(360deg)';
-  setTimeout(() => {
-    document.body.style.filter = 'none';
-  }, 2000);
-
-  const input = document.getElementById('terminal-input');
-  if (input) {
-    input.value = 'easter';
-    input.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter' }));
-  }
-}
-
-console.log('%c🟢 Mr. Tan Portfolio Loaded', 'color: #00ff41; font-size: 16px; font-weight: bold;');
-console.log('%cType "help" in the terminal to explore | Konami Code: ↑↑↓↓←→←→BA', 'color: #00b4d8; font-size: 12px;');
