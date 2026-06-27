@@ -55,19 +55,6 @@
     .meta-item { display:flex; flex-direction:column; gap:5px; }
     .meta-label { font-family:var(--font-mono); font-size:.58rem; letter-spacing:.18em; color:var(--neon); opacity:.45; text-transform:uppercase; }
     .meta-val { font-size:.84rem; color:var(--text-primary); font-weight:500; line-height:1.4; }
-
-    /* CV download button */
-    .cv-btn {
-      display:inline-flex; align-items:center; gap:var(--sp-3);
-      font-family:var(--font-mono); font-size:.82rem; font-weight:600;
-      color:var(--bg-base); background:var(--neon);
-      border:1px solid var(--neon); padding:var(--sp-3) var(--sp-6);
-      border-radius:var(--radius-sm); text-decoration:none; letter-spacing:.06em;
-      transition:background var(--ease-fast),box-shadow var(--ease-fast),transform var(--ease-fast);
-    }
-    .cv-btn:hover { background:#00ff41; box-shadow:0 0 22px rgba(0,230,57,.35); transform:translateY(-2px); }
-    .cv-btn__text { display:flex; flex-direction:column; }
-    .cv-btn__sub  { font-size:.62rem; font-weight:400; opacity:.7; letter-spacing:.08em; margin-top:2px; }
   </style>
 </head>
 <body>
@@ -148,27 +135,6 @@
                 <span class="meta-label">GitHub</span>
                 <span class="meta-val"><a href="https://github.com/mrtan-official" style="color:var(--neon);text-decoration:none;" target="_blank">mrtan-official</a></span>
               </div>
-            </div>
-
-            <!-- CV Download -->
-            <div style="margin-top:var(--sp-8);">
-              <a
-                href="https://mrtan-official.github.io/assets/files/mrtan-cv.pdf"
-                class="cv-btn"
-                download="MrTan-CV.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;flex-shrink:0;">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                  <polyline points="7 10 12 15 17 10"/>
-                  <line x1="12" y1="15" x2="12" y2="3"/>
-                </svg>
-                <span class="cv-btn__text">
-                  Download CV
-                  <span class="cv-btn__sub">mrtan-cv.pdf · Abu Tanim</span>
-                </span>
-              </a>
             </div>
           </div>
         </div>
