@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>About — Mr. Tan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .about-grid {
+      display:grid; grid-template-columns:210px 1fr;
+      gap:var(--sp-16); align-items:start;
+    }
+    @media(max-width:860px){ .about-grid{ grid-template-columns:1fr; gap:var(--sp-10); } }
+
+    .avatar-frame {
+      display:flex; flex-direction:column; align-items:center; gap:var(--sp-5);
+      position:sticky; top:calc(60px + var(--sp-8));
+    }
+    .avatar-wrap { position:relative; width:155px; height:155px; margin:0 auto; }
+    .avatar-ring {
+      position:absolute; inset:-12px; border-radius:50%;
+      border:1px solid rgba(0,230,57,.12); animation:spinRing 14s linear infinite; pointer-events:none;
+    }
+    .avatar-ring-2 { inset:-24px; border-color:rgba(56,189,248,.08); animation-duration:22s; animation-direction:reverse; }
+    @keyframes spinRing{ to{transform:rotate(360deg)} }
+    .avatar-img {
+      position:relative; z-index:1; border-radius:50%;
+      object-fit:cover; display:block; width:155px; height:155px;
+      border:1.5px solid rgba(0,230,57,.35);
+      box-shadow:0 0 28px rgba(0,230,57,.07),0 0 0 8px rgba(0,230,57,.02);
+    }
+    .status-badge {
+      font-family:var(--font-mono); font-size:.65rem; color:var(--neon);
+      border:1px solid rgba(0,230,57,.18); background:rgba(0,230,57,.03);
+      padding:5px 14px; border-radius:20px; letter-spacing:.06em;
+      display:flex; align-items:center; gap:7px; white-space:nowrap;
+    }
+    .status-dot {
+      width:6px; height:6px; background:var(--neon); border-radius:50%; flex-shrink:0;
+      animation:pdot 2s ease-in-out infinite;
+    }
+    @keyframes pdot{0%,100%{box-shadow:0 0 0 0 rgba(0,230,57,.5)}50%{box-shadow:0 0 0 4px rgba(0,230,57,0)}}
+
+    .about-lead { font-size:1.02rem; font-weight:500; color:var(--text-primary); margin-bottom:var(--sp-5); line-height:1.75; }
+    .about-body { font-size:.9rem; color:var(--text-secondary); margin-bottom:var(--sp-5); line-height:1.82; }
+
+    .meta-grid {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+      gap:var(--sp-4); margin-top:var(--sp-8); padding-top:var(--sp-8);
+      border-top:1px solid var(--border);
+    }
+    .meta-item { display:flex; flex-direction:column; gap:5px; }
+    .meta-label { font-family:var(--font-mono); font-size:.58rem; letter-spacing:.18em; color:var(--neon); opacity:.45; text-transform:uppercase; }
+    .meta-val { font-size:.84rem; color:var(--text-primary); font-weight:500; line-height:1.4; }
+  </style>
+</head>
+<body>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav__logo">
+      <span class="nav__logo-bracket">[</span><span class="nav__logo-text">Mr.Tan</span><span class="nav__logo-bracket">]</span><span class="nav__logo-cursor">_</span>
+    </a>
+    <button class="nav__hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav__links" id="nav-links">
+      <li><a href="about.html"    class="nav__link active"><span class="nav__link-prefix">~/</span>about</a></li>
+      <li><a href="skills.html"   class="nav__link"><span class="nav__link-prefix">~/</span>skills</a></li>
+      <li><a href="projects.html" class="nav__link"><span class="nav__link-prefix">~/</span>projects</a></li>
+      <li><a href="contact.html"  class="nav__link nav__link--cta">contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="page">
+    <!-- Page hero -->
+    <div class="page-hero">
+      <div class="page-hero__bg" aria-hidden="true"></div>
+      <div class="container">
+        <span class="page-hero__eyebrow">// 01</span>
+        <h1 class="page-hero__title">About<span class="accent">.</span></h1>
+        <p class="page-hero__sub">Cybersecurity Researcher · Python Developer · CSE Student</p>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="container">
+        <div class="about-grid">
+          <!-- Avatar -->
+          <div class="reveal">
+            <div class="avatar-frame">
+              <div class="avatar-wrap">
+                <img src="assets/images/profile.jpg" alt="Abu Tanim" class="avatar-img"/>
+                <div class="avatar-ring"></div>
+                <div class="avatar-ring avatar-ring-2"></div>
+              </div>
+              <div class="status-badge">
+                <span class="status-dot"></span>Available for Collaboration
+              </div>
+            </div>
+          </div>
+
+          <!-- Content -->
+          <div class="reveal">
+            <p class="about-lead">
+              I'm <strong class="accent">Abu Tanim</strong> — a Cybersecurity Researcher and Python Developer operating at the intersection of offensive security, network engineering, and AI-driven automation.
+            </p>
+            <p class="about-body">
+              Pursuing my degree in Computer Science &amp; Engineering at <strong>Premier University, Chittagong</strong>, I architect security frameworks that think adversarially — stress-testing systems before the adversaries do. My research centers on <span class="accent">Zero Trust Architecture</span>, where the mantra is <em>never trust, always verify</em>.
+            </p>
+            <p class="about-body">
+              Beyond defensive postures, I build Python-powered automation pipelines that transform raw threat intelligence into actionable signals. Whether it's dissecting network traffic, implementing AI-augmented vulnerability scanners, or engineering CLI security toolkits, I operate with surgical precision and a bias toward clean, auditable code.
+            </p>
+            <p class="about-body">
+              When I'm not breaking things for science, I'm building tools that make breaking things easier — because the best defense is knowing exactly how an attacker thinks.
+            </p>
+
+            <div class="meta-grid">
+              <div class="meta-item">
+                <span class="meta-label">Location</span>
+                <span class="meta-val">Chittagong, Bangladesh</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">University</span>
+                <span class="meta-val">Premier University, CSE</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Focus</span>
+                <span class="meta-val">Zero Trust · VAPT · AI Security</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">GitHub</span>
+                <span class="meta-val"><a href="https://github.com/mrtan-official" style="color:var(--neon);text-decoration:none;" target="_blank">mrtan-official</a></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact-footer">
+      <div class="container">
+        <div class="footer__top">
+          <div>
+            <div class="footer__logo">Mr<span class="accent">.</span>Tan</div>
+            <p class="footer__tagline">// Securing systems. Automating intelligence. Breaking limits.</p>
+          </div>
+          <div class="footer__links">
+            <a href="https://github.com/mrtan-official" class="footer__social" target="_blank">
+              <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+              GitHub
+            </a>
+            <a href="mailto:mrtanvai@gmail.com" class="footer__social">
+              <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              Email
+            </a>
+          </div>
+        </div>
+        <div class="footer__bottom">
+          <span class="footer__copy">&copy; 2026 Abu Tanim.</span>
+          <span class="footer__version">v3.0.0 // mrtan-official.github.io</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="nav.js"></script>
+  <script src="reveal.js"></script>
+</body>
+</html>
